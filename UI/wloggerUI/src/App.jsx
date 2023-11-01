@@ -16,7 +16,7 @@ function App() {
     <>
       <div className={'app' }>
         <Navbar/>
-        {/* <LandingPage /> */}
+        <LandingPage />
         <Post />
         <Footer />
       </div>
