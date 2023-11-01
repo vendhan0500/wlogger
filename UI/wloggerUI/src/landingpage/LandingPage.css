@@ -1,0 +1,14 @@
+.sections{
+    width: 100%;
+    height: calc(100vh - 70px);
+}
+
+.sections > * {
+    width: 100vw;
+    height: calc(100vh - 70px);
+}
+
+.sections >.welcometext-container {
+    width: 100vw;
+    height: calc(70vh - 70px);
+}
