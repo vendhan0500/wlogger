@@ -7,45 +7,48 @@ namespace API.Controllers;
 [Route("[controller]")]
 public class PostController : ControllerBase{
 
-    private readonly IUserService userService;
-    public PostController(UserService userService)
+    private readonly BlogContext _dbContext;
+    public PostController(BlogContext dbContext)
     {
-        this.userService = userService;
+        _dbContext = dbContext;
     }
 
     [HttpGet]
-    public ActionResult<List<User>> GetAll(){
-        return userService.GetAllUser();
+    public ActionResult<List<Post>> GetAll(){
+        return _dbContext.Posts.ToList();
     }
 
     [HttpGet("{id}")]
-    public ActionResult<User> GetStudent(string id){
-        return userService.GetUser(id);
+    public ActionResult<Post> GetStudent(int id){
+        return _dbContext.Posts.FirstOrDefault(x => x.PostId == id);
     }
 
     [HttpPost]
-    public ActionResult<User> Save([FromBody] User user){
-        userService.Save(user);
-        return CreatedAtAction(nameof(GetStudent), new {id=user.UserId}, user);
+    public ActionResult<User> Save([FromBody] Post post){
+        _dbContext.Posts.Add(post);
+        _dbContext.SaveChanges();
+        return CreatedAtAction(nameof(GetStudent), new {id=post.PostId}, post);
     }
 
     [HttpPut("{id}")]
-    public ActionResult UpdateUser(string id, [FromBody] User user){
-        var existingUser = userService.GetUser(id);
-        if(existingUser == null){
+    public ActionResult UpdatePost(int id, [FromBody] Post post){
+        var existingPost = _dbContext.Posts.FirstOrDefault(x => x.PostId == id);
+        if(existingPost == null){
             return NotFound($"Student with Id = {id} not found");
         }
-        userService.UpdateUser(id, user);
+        existingPost = post;
+        _dbContext.SaveChanges();
         return NoContent();
     }
 
     [HttpDelete("{id}")]
-    public ActionResult Delete(string id){
-        var student =  userService.GetUser(id);
-        if(student == null) {
+    public ActionResult Delete(int id){
+        var post =  _dbContext.Posts.FirstOrDefault(x => x.PostId == id);
+        if(post == null) {
             return NotFound($"Student with Id = {id} not found");
         }
-        userService.RemoveUser(student.UserId);
+        _dbContext.Posts.Remove(post);
+        _dbContext.SaveChanges();
         return Ok($"Student with Id= {id} deleted" );
     }
 }

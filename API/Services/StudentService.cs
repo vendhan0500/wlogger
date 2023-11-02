@@ -14,12 +14,12 @@ namespace API.Models{
             return _user.Find(user => true).ToList();
         }
 
-        public User GetUser(string id)
+        public User GetUser(int id)
         {
             return _user.Find(user => user.UserId == id).FirstOrDefault();
         }
 
-        public void RemoveUser(string id)
+        public void RemoveUser(int id)
         {
             _user.DeleteOne(user => user.UserId == id);
         }
@@ -30,7 +30,7 @@ namespace API.Models{
             return user;
         }
 
-        public void UpdateUser(string id, User user)
+        public void UpdateUser(int id, User user)
         {
            _user.ReplaceOne(user => user.UserId == id, user);
         }

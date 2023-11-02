@@ -1,20 +1,11 @@
 using API.Models;
-using Microsoft.Extensions.Options;
-using MongoDB.Driver;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.Configure<BlogDatabaseSettings>(
-    builder.Configuration.GetSection(nameof(BlogDatabaseSettings)));
-
-builder.Services.AddSingleton<IBlogDatabaseSettings>(s => 
-    s.GetRequiredService<IOptions<BlogDatabaseSettings>>().Value);
-
-builder.Services.AddSingleton<IMongoClient>(s => 
-    new MongoClient(builder.Configuration.GetValue<string>("BlogDatabaseSettings:Connection")));
-
-builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddDbContext<BlogContext>(options =>   
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Blog")));
 
 
 builder.Services.AddControllers();

@@ -19,7 +19,7 @@ public class UserController : ControllerBase{
     }
 
     [HttpGet("{id}")]
-    public ActionResult<User> GetStudent(string id){
+    public ActionResult<User> GetStudent(int id){
         return userService.GetUser(id);
     }
 
@@ -30,7 +30,7 @@ public class UserController : ControllerBase{
     }
 
     [HttpPut("{id}")]
-    public ActionResult UpdateUser(string id, [FromBody] User user){
+    public ActionResult UpdateUser(int id, [FromBody] User user){
         var existingUser = userService.GetUser(id);
         if(existingUser == null){
             return NotFound($"Student with Id = {id} not found");
@@ -40,7 +40,7 @@ public class UserController : ControllerBase{
     }
 
     [HttpDelete("{id}")]
-    public ActionResult Delete(string id){
+    public ActionResult Delete(int id){
         var student =  userService.GetUser(id);
         if(student == null) {
             return NotFound($"Student with Id = {id} not found");

@@ -2,9 +2,9 @@ namespace API.Models
 {
     public interface IPostService {
         List<Post> GetAllPosts();
-        Post GetPost(string id);
+        Post GetPost(int id);
         Post Save(Post post);
-        void UpdatePost(string id, Post post);
-        void RemovePost(string id);
+        void UpdatePost(int id, Post post);
+        void RemovePost(int id);
     }
 }
