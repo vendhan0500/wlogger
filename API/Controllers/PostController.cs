@@ -15,11 +15,11 @@ public class PostController : ControllerBase{
 
     [HttpGet]
     public ActionResult<List<Post>> GetAll(){
-        return _dbContext.Posts.ToList();
+        return _dbContext.Posts.OrderByDescending(x => x.DateAdded).ToList();
     }
 
     [HttpGet("{id}")]
-    public ActionResult<Post> GetStudent(int id){
+    public ActionResult<Post> GetPost(int id){
         return _dbContext.Posts.FirstOrDefault(x => x.PostId == id);
     }
 
@@ -27,7 +27,7 @@ public class PostController : ControllerBase{
     public ActionResult<User> Save([FromBody] Post post){
         _dbContext.Posts.Add(post);
         _dbContext.SaveChanges();
-        return CreatedAtAction(nameof(GetStudent), new {id=post.PostId}, post);
+        return CreatedAtAction(nameof(GetPost), new {id=post.PostId}, post);
     }
 
     [HttpPut("{id}")]
