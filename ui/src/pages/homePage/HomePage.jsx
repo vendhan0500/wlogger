@@ -5,8 +5,11 @@ import Posts from '../../components/posts/Posts'
 import Sidebar from '../../components/sidebar/Sidebar'
 import './HomePage.css'
 import axios from 'axios'
+import setUser from '../../Context/Reducer'
+import { connect } from 'react-redux'
 
-export default function Homepage() {
+function Homepage({ user }) {
+  console.log(user)
   const [posts, setPosts] = useState([])
   const { search } = useLocation()
 
@@ -28,3 +31,9 @@ export default function Homepage() {
     </>
   )
 }
+
+const mapStateToProps = (state) => ({
+  user: state.user.user,
+})
+
+export default connect(mapStateToProps, { setUser })(Homepage)
