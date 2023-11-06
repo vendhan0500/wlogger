@@ -73,10 +73,6 @@ namespace API.Migrations
 
                     b.HasKey("PostId");
 
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("UserId");
-
                     b.ToTable("Posts");
                 });
 
@@ -113,25 +109,6 @@ namespace API.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("API.Models.Post", b =>
-                {
-                    b.HasOne("API.Models.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("API.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
-
-                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

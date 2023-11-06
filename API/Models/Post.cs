@@ -14,13 +14,12 @@ namespace API.Models
         public string Photo {get; set;}
         [ForeignKey("User")]
         public int UserId {get; set;}
+        [NotMapped]
         public User User {get; set;}
         public int CategoryId {get; set;}
-        [ForeignKey("CategoryId")]
-        public Category Category {get; set;}
         [BsonElement("dateAdded")]
-        public DateTime DateAdded {get; set;}
+        public DateTime DateAdded {get; set;} = new DateTime();
         [BsonElement("dateModified")]
-        public DateTime DateModified {get; set;}
+        public DateTime DateModified {get; set;} = new DateTime();
     }
 }
