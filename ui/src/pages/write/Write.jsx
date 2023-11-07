@@ -95,7 +95,7 @@ export default function Write() {
         </button>
       </form>
       <ToastContainer
-        position='top-center'
+        position='top-right'
         autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}

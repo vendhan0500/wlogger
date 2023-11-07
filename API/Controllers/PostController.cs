@@ -32,13 +32,13 @@ public class PostController : ControllerBase{
 
     [HttpPut("{id}")]
     public ActionResult UpdatePost(int id, [FromBody] Post post){
-        var existingPost = _dbContext.Posts.FirstOrDefault(x => x.PostId == id);
+        var existingPost = _dbContext.Posts.FirstOrDefault(x => x.PostId == post.PostId);
         if(existingPost == null){
-            return NotFound($"User with Id = {id} not found");
+            return NotFound($"Post with Id = {id} not found");
         }
         existingPost = post;
         _dbContext.SaveChanges();
-        return NoContent();
+        return Ok($"{post.Description}");
     }
 
     [HttpDelete("{id}")]

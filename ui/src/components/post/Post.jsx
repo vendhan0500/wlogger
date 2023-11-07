@@ -43,7 +43,7 @@ export default function Post({ img, post }) {
           </span>
         </div>
         <span className='postTitle'>
-          <Link to='/post/abc' className='link'>
+          <Link to={`/post/${post.postId}`} className='link'>
             {post.title}
           </Link>
         </span>
