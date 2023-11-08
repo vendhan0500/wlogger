@@ -22,7 +22,7 @@ public class AuthController : ControllerBase{
 
     [HttpPost("login")]
     public ActionResult Login([FromBody] UserViewModel user){
-        
+       
         try{
             var existingUser = _dbContext.Users.FirstOrDefault(x => x.Email == user.UserMail && x.Password == user.Password);
             if(existingUser == null){
@@ -31,12 +31,16 @@ public class AuthController : ControllerBase{
 
             var jwtToken = _jwtService.Generate(existingUser.UserId);
             Response.Cookies.Append("jwt", jwtToken, new CookieOptions{
-                HttpOnly = true 
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None,
+                Expires = DateTime.UtcNow.AddHours(1)
             });
             return Ok(new {message = "Success", user =new  {
                 userId = existingUser.UserId,
                 userName = existingUser.UserName,
-                email = existingUser.Email
+                email = existingUser.Email,
+                jwt = jwtToken
             }});
 
         }catch(Exception e){

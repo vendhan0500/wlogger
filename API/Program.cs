@@ -33,9 +33,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
-    {
-        builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
-    }));
+{
+    builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
+}));
 
 var app = builder.Build();
 

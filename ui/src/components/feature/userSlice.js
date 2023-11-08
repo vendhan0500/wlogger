@@ -8,10 +8,12 @@ const userSlice = createSlice({
   reducers: {
     login: (state, action) => {
         console.log(action.payload)
-      state.user = action.payload
+        state.user = action.payload
+        localStorage.setItem('user', JSON.stringify(state.user))
     },
     logout: (state, action ) => {
       state.user = null
+      localStorage.setItem('user', JSON.stringify(state.user))
     }
   }
 })

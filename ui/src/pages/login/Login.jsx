@@ -6,6 +6,7 @@ import { connect, useDispatch } from 'react-redux'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { login } from '../../components/feature/userSlice'
+import { useLocation } from 'react-router-dom/cjs/react-router-dom'
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -15,6 +16,8 @@ function Login() {
 
   const [isButtonDisabled, setButtonDisabled] = useState(false)
   const dispatch = useDispatch();
+  const location = useLocation();
+
 
   const handleInputChange = (e) => {
     console.log(e)
@@ -40,11 +43,12 @@ function Login() {
       })
       .catch((err) => {
         console.error(err)
+        toast(err.response.data)
       })
     setTimeout(() => {
       setButtonDisabled(false)
     }, 2000)
-    console.log(isButtonDisabled)
+
   }
 
   return (
@@ -73,7 +77,7 @@ function Login() {
       </form>
       <ToastContainer
         position='top-right'
-        autoClose={5000}
+        autoClose={2500}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick

@@ -6,13 +6,13 @@ export default function Sidebar() {
     <div className='sidebar'>
       <div className='sidebarItem'>
         <span className='sidebarTitle'>ABOUT ME</span>
-        <img src='' alt='' />
+        <img src='https://t4.ftcdn.net/jpg/02/14/74/61/240_F_214746128_31JkeaP6rU0NzzzdFC4khGkmqc8noe6h.jpg' alt='' />
         <p>
-          I am MukilVendhan R. Working as a Senior Product Enginerr in LTI
+          I am MukilVendhan R. Working as a Senior Product Engineer in LTI
           Mindtree.This is my blog website
         </p>
       </div>
-      <div className='sidebarItem'>
+      {/* <div className='sidebarItem'>
         <span className='sidebarTitle'>CATEGORIES</span>
         <ul className='sidebarList'>
           <li className='sidebarListItem'>
@@ -46,7 +46,7 @@ export default function Sidebar() {
             </Link>
           </li>
         </ul>
-      </div>
+      </div> */}
       <div className='sidebarItem'>
         <span className='sidebarTitle'>FOLLOW ME</span>
         <div className='sidebarSocial'>

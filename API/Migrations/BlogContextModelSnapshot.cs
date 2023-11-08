@@ -32,6 +32,47 @@ namespace API.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("API.Models.Comment", b =>
+                {
+                    b.Property<int>("CommentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("CommentId");
+
+                    b.ToTable("Comment");
+                });
+
+            modelBuilder.Entity("API.Models.CommentList", b =>
+                {
+                    b.Property<int>("CommentListId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CommentBody")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("CommentId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("CommentedBy")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("CommentListId");
+
+                    b.HasIndex("CommentId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("CommentList");
+                });
+
             modelBuilder.Entity("API.Models.Post", b =>
                 {
                     b.Property<int>("PostId")
@@ -39,6 +80,9 @@ namespace API.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("CategoryId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("CommentId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("DateAdded")
@@ -63,6 +107,8 @@ namespace API.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("PostId");
+
+                    b.HasIndex("CommentId");
 
                     b.ToTable("Posts");
                 });
@@ -98,6 +144,35 @@ namespace API.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("API.Models.CommentList", b =>
+                {
+                    b.HasOne("API.Models.Comment", null)
+                        .WithMany("CommentBody")
+                        .HasForeignKey("CommentId");
+
+                    b.HasOne("API.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("API.Models.Post", b =>
+                {
+                    b.HasOne("API.Models.Comment", "Comment")
+                        .WithMany()
+                        .HasForeignKey("CommentId");
+
+                    b.Navigation("Comment");
+                });
+
+            modelBuilder.Entity("API.Models.Comment", b =>
+                {
+                    b.Navigation("CommentBody");
                 });
 #pragma warning restore 612, 618
         }

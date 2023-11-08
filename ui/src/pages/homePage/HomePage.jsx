@@ -16,7 +16,8 @@ function Homepage({ user }) {
   useEffect(() => {
     const fetchPosts = async () => {
       const res = await axios.get('https://localhost:7148/Post' + search)
-      setPosts(res.data)
+      if(res.data)
+        setPosts(res.data)
     }
     fetchPosts()
   }, [search])
