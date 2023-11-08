@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux'
 import Topbar from './components/topbar/Topbar'
 import Homepage from './pages/homePage/HomePage'
 import Login from './pages/login/Login'
@@ -6,12 +7,15 @@ import Settings from './pages/settings/Settings'
 import Single from './pages/single/Single'
 import Write from './pages/write/Write'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { selectUser } from './components/feature/userSlice'
 
 function App() {
-  const currentUser = false
+  const userData = useSelector(selectUser);
+  console.log(userData)
+  const currentUser = userData.user != null ? userData : false;
   return (
     <Router>
-      <Topbar />
+      <Topbar/>
       <Switch>
         <Route exact path='/'>
           <Homepage />

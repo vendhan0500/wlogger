@@ -39,8 +39,8 @@ export default function Register() {
       })
     setTimeout(() => {
       setButtonDisabled(false)
+      window.location.replace('/login')
     }, 2000)
-    console.log(isButtonDisabled)
   }
 
   return (
@@ -76,8 +76,8 @@ export default function Register() {
         </button>
       </form>
       <ToastContainer
-        position='top-center'
-        autoClose={5000}
+        position='top-right'
+        autoClose={2500}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
@@ -87,7 +87,6 @@ export default function Register() {
         pauseOnHover
         theme='light'
       />
-      <button className='registerLoginButton'>Login</button>
     </div>
   )
 }

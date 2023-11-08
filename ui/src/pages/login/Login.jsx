@@ -2,17 +2,22 @@ import { useState } from 'react'
 import './Login.css'
 import axios from 'axios'
 import setUser from '../../Context/Reducer'
-import { connect } from 'react-redux'
+import { connect, useDispatch } from 'react-redux'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { login } from '../../components/feature/userSlice'
+import { useLocation } from 'react-router-dom/cjs/react-router-dom'
 
-function Login({ user }) {
+function Login() {
   const [formData, setFormData] = useState({
     userMail: '',
     password: '',
   })
 
   const [isButtonDisabled, setButtonDisabled] = useState(false)
+  const dispatch = useDispatch();
+  const location = useLocation();
+
 
   const handleInputChange = (e) => {
     console.log(e)
@@ -22,7 +27,6 @@ function Login({ user }) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(formData)
     setButtonDisabled(true)
     axios
       .post('https://localhost:7148/Auth/login', formData)
@@ -31,16 +35,20 @@ function Login({ user }) {
         if (response.request.status === 200) {
           toast('Login Successful')
         }
-        console.log(response.data.user)
-        setUser(response.data.user)
+        dispatch(login({
+          email:response.data.user.email,
+          userId:response.data.user.userId,
+          userName:response.data.user.userName
+        }))
       })
       .catch((err) => {
         console.error(err)
+        toast(err.response.data)
       })
     setTimeout(() => {
       setButtonDisabled(false)
     }, 2000)
-    console.log(isButtonDisabled)
+
   }
 
   return (
@@ -67,10 +75,9 @@ function Login({ user }) {
           Login
         </button>
       </form>
-      <button className='loginRegisterButton'>Register</button>
       <ToastContainer
-        position='top-center'
-        autoClose={5000}
+        position='top-right'
+        autoClose={2500}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick

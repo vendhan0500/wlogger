@@ -18,15 +18,6 @@ export default function Write() {
       description,
       userId: 1,
       photo: '',
-      user: {
-        userId: 1,
-        userName: 'string',
-        email: 'string',
-        password: 'string',
-        profilePicture: 'string',
-        dateAdded: new Date(),
-        dateModified: new Date(),
-      },
       category: {
         categoryId: 1,
         categoryName: 'string',
@@ -52,7 +43,7 @@ export default function Write() {
         toast('Post Added Sucessfully. Redirecting you to home page')
         setTimeout(() => {
           window.location.replace('/')
-        }, 8000)
+        }, 5000)
       }
     } catch (err) {}
   }
@@ -95,8 +86,8 @@ export default function Write() {
         </button>
       </form>
       <ToastContainer
-        position='top-center'
-        autoClose={5000}
+        position='top-right'
+        autoClose={2500}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
