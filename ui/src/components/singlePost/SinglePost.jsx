@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import './SinglePost.css'
 import PostsData from '../../Dummy'
 import { useLocation } from "react-router";
 import { useContext, useEffect, useState } from "react";
 import axios from 'axios'
 import Comments from '../comments/Comments';
+import { selectUser } from '../../components/feature/userSlice';
 
 
 
@@ -18,8 +20,8 @@ export default function SinglePost() {
   const [updateMode, setUpdateMode] = useState(false);
   const [author, setAuthor] = useState("");
   const [comment, setComment] = useState([]);
-
-  const user = []
+  const currentUser = useSelector(selectUser);
+  console.log("CURR", currentUser.user.userId)
 
   useEffect(() => {
     const getPost = async () => {
@@ -27,7 +29,10 @@ export default function SinglePost() {
       setPost(res.data);
       setTitle(res.data.title);
       setDescription(res.data.description);
-      setAuthor(res.data.user.userName);
+      if(Object.entries(res.data.user).length !== 0)
+        setAuthor(res.data.user.userName);
+      else
+        setAuthor("System Generated");
       setComment(res.data.comments);
     };
     getPost();
@@ -52,7 +57,7 @@ export default function SinglePost() {
         title,
         description,
         postId:post.postId,
-        userId: user.userId,
+        userId: currentUser.user.userId,
         photo: "",
         categoryId: 0,
         dateAdded: "2023-11-06T12:45:38.157",
@@ -63,6 +68,8 @@ export default function SinglePost() {
       console.log(err)
     }
   };
+
+  console.log(currentUser.user)
 
   function timeAgoWithTimeZone(datetime) {
     const now = new Date()
@@ -100,7 +107,7 @@ export default function SinglePost() {
         />
         <h1 className="singlePostTitle">
           {title}
-          {post.userId === user.userId && (
+          {/* {post.userId === currentUser.user.userId && (
             <div className="singlePostEdit">
               <i
                 className="singlePostIcon far fa-edit"
@@ -111,7 +118,7 @@ export default function SinglePost() {
                 onClick={handleDelete}
               ></i>
             </div>
-          )}
+          )} */}
         </h1>
         <div className='singlePostInfo'>
           <span>
@@ -140,7 +147,7 @@ export default function SinglePost() {
         )}
       </div>
       <div className="comment-section-container">
-        <Comments />
+        <Comments currentUserId={currentUser.user.userId}/> 
       </div>
     </div>
   );

@@ -9,7 +9,6 @@ import 'react-toastify/dist/ReactToastify.css'
 export default function Topbar() {
 
   const userData = useSelector(selectUser);
-  console.log(userData)
   const user = userData.user != null ? userData : false;
 
   const dispatch = useDispatch();

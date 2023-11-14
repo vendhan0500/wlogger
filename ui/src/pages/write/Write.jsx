@@ -1,7 +1,6 @@
-import { useState, useContext } from 'react'
+import { useState } from 'react'
 import './Write.css'
 import axios from 'axios'
-import { Context } from '../../Context/Context'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -9,7 +8,6 @@ export default function Write() {
   const [title, setTitle] = useState('')
   const [description, setDesc] = useState('')
   const [file, setFile] = useState(null)
-  const { user } = useContext(Context)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -17,11 +15,10 @@ export default function Write() {
       title,
       description,
       userId: 1,
+      user:{},
       photo: '',
-      category: {
-        categoryId: 1,
-        categoryName: 'string',
-      },
+      commentId:0,
+      comments:[],
       dateAdded: new Date(),
       dateModified: new Date(),
     }

@@ -38,39 +38,29 @@ namespace API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("CommentId");
-
-                    b.ToTable("Comment");
-                });
-
-            modelBuilder.Entity("API.Models.CommentList", b =>
-                {
-                    b.Property<int>("CommentListId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("CommentBody")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("CommentId")
+                    b.Property<int?>("CommentParentId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("CommentedBy")
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("PostId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("CommentListId");
+                    b.Property<string>("UserName")
+                        .HasColumnType("TEXT");
 
-                    b.HasIndex("CommentId");
+                    b.HasKey("CommentId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("PostId");
 
-                    b.ToTable("CommentList");
+                    b.ToTable("Comment");
                 });
 
             modelBuilder.Entity("API.Models.Post", b =>
@@ -108,8 +98,6 @@ namespace API.Migrations
 
                     b.HasKey("PostId");
 
-                    b.HasIndex("CommentId");
-
                     b.ToTable("Posts");
                 });
 
@@ -126,19 +114,15 @@ namespace API.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Password")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ProfilePicture")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UserName")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("UserId");
@@ -146,33 +130,18 @@ namespace API.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("API.Models.CommentList", b =>
+            modelBuilder.Entity("API.Models.Comment", b =>
                 {
-                    b.HasOne("API.Models.Comment", null)
-                        .WithMany("CommentBody")
-                        .HasForeignKey("CommentId");
-
-                    b.HasOne("API.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                    b.HasOne("API.Models.Post", null)
+                        .WithMany("Comments")
+                        .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("API.Models.Post", b =>
                 {
-                    b.HasOne("API.Models.Comment", "Comment")
-                        .WithMany()
-                        .HasForeignKey("CommentId");
-
-                    b.Navigation("Comment");
-                });
-
-            modelBuilder.Entity("API.Models.Comment", b =>
-                {
-                    b.Navigation("CommentBody");
+                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }

@@ -16,7 +16,7 @@
   }
   
   .comment-form-textarea {
-    width: 100%;
+    width: 50%;
     height: 80px;
     margin-bottom: 8px;
     margin-top: 8px;
@@ -26,9 +26,12 @@
   .comment-form-button {
     font-size: 16px;
     padding: 8px 16px;
-    background: rgb(59, 130, 246);
+    background: rgb(59, 100, 246);
     border-radius: 8px;
     color: white;
+    display: flex;
+    gap: 10px;
+    outline: none;
   }
   
   .comment-form-button:hover:enabled {
@@ -64,6 +67,7 @@
   
   .comment-content {
     display: flex;
+    align-items: center;
   }
   
   .comment-author {
@@ -94,4 +98,15 @@
   
   .replies {
     margin-top: 20px;
+  }
+
+  .comment-section-container{
+    position: relative;
+    left: 6%;
+  }
+
+  .form-container{
+    display: flex;
+    align-items: center;
+    gap: 30px;
   }

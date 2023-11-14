@@ -1,4 +1,5 @@
 using API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,10 @@ public class PostController : ControllerBase{
             var user = _dbContext.Users.FirstOrDefault(x => x.UserId == post.UserId);
             if(user != null)
                 post.User = user;
+            
+            var comments = _dbContext.Comment.Where(x => x.PostId == id).ToList();
+            if(comments.Count() != 0)
+                post.Comments = comments;
         }
         return post;
     }
@@ -41,7 +46,13 @@ public class PostController : ControllerBase{
 
     [HttpPut]
     public ActionResult Update([FromBody] Post post){
-        var existingPost = _dbContext.Posts.FirstOrDefault(x => x.PostId == post.PostId);
+        var existingPost = _dbContext.Posts.AsNoTracking().FirstOrDefault(x => x.PostId == post.PostId);
+        if(post.Comments != null && post.Comments.Count > 0){
+            var comments =  new List<Comment>(post.Comments);
+            foreach(var comment in comments){
+                _dbContext.Comment.Add(comment);
+            }
+        }
         if(existingPost == null){
             return NotFound($"Post with Id = {post.PostId} not found");
         }else{
@@ -60,5 +71,18 @@ public class PostController : ControllerBase{
         _dbContext.Posts.Remove(post);
         _dbContext.SaveChanges();
         return Ok($"User with Id= {id} deleted" );
+    }
+
+    [HttpPost("SaveComment")]
+    public ActionResult SaveComment([FromBody] Comment comment){
+         _dbContext.Comment.Add(comment);
+         _dbContext.SaveChanges();
+        return Ok("Action successful");
+    }
+
+    [HttpGet("GetComment")]
+    public ActionResult<List<Comment>> GetPostComment(int postId){
+        var comments = _dbContext.Comment.OrderByDescending(x => x.CreatedAt).ToList();
+        return comments.Count() != 0  ? comments : null;
     }
 }

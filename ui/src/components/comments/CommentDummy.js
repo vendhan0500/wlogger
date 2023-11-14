@@ -1,49 +1,38 @@
-export const getComments = async () => {
-    return [
-      {
-        id: "1",
-        body: "First comment",
-        username: "Dev",
-        userId: "1",
-        parentId: null,
-        createdAt: "2021-08-16T23:00:33.010+02:00",
-      },
-      {
-        id: "2",
-        body: "Second comment",
-        username: "Cena",
-        userId: "2",
-        parentId: null,
-        createdAt: "2021-08-16T23:00:33.010+02:00",
-      },
-      {
-        id: "3",
-        body: "First comment first child",
-        username: "Cena",
-        userId: "2",
-        parentId: "1",
-        createdAt: "2021-08-16T23:00:33.010+02:00",
-      },
-      {
-        id: "4",
-        body: "Second comment second child",
-        username: "Cena",
-        userId: "2",
-        parentId: "2",
-        createdAt: "2021-08-16T23:00:33.010+02:00",
-      },
-    ];
+import axios from "axios";
+import app from '../../firebase'
+
+export const getComments = async (postId) => {
+
+    var res = await axios.get("https://localhost:7148/Post/GetComment?postId="+ postId);
+    console.log(res.data)
+    var result = res.data.map((comment) => {
+      return  {
+        id: comment.commentId,
+        body: comment.commentBody,
+        username: comment.userName,
+        userId: comment.userId,
+        parentId: comment.commentParentId !== 0 ? comment.commentParentId : null,
+        createdAt: comment.createdAt,
+      }
+    })
+    return result;
   };
   
-  export const createComment = async (text, parentId = null) => {
-    return {
-      id: Math.random().toString(36).substr(2, 9),
-      body: text,
-      parentId,
-      userId: "1",
-      username: "John",
-      createdAt: new Date().toISOString(),
+  export const createComment = async (text, parentId = null, user, postId) => {
+    console.log(parentId, postId, user)
+    var commentContent = {
+      commentId: 0,
+      commentBody: text,
+      userId: user.userId,
+      userName: user.userName,
+      commentParentId: parentId ?? 0,
+      postId,
+      createdAt: new Date().toISOString()
     };
+
+    const res = await axios.post('https://localhost:7148/Post/SaveComment', commentContent)
+    console.log(res)
+    return commentContent;
   };
   
   export const updateComment = async (text) => {
