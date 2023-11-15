@@ -49,7 +49,7 @@ export default function Register() {
     if(e.target.value.trim() !== ''){
       console.log(document.getElementById('profImage').innerHTML)
       document.getElementById('profImage').innerHTML = `<img src="${e.target.value}" alt="previewimg"
-      style="max-width:100%; max-height:200px"`
+      style="max-width:100%; max-height:200px"/>`
     }
   }
 

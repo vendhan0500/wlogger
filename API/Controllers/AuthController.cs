@@ -40,6 +40,7 @@ public class AuthController : ControllerBase{
                 userId = existingUser.UserId,
                 userName = existingUser.UserName,
                 email = existingUser.Email,
+                profileImg= existingUser.ProfilePicture != string.Empty ? existingUser.ProfilePicture : string.Empty,
                 jwt = jwtToken
             }});
 
