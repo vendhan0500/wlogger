@@ -38,7 +38,8 @@ function Login() {
         dispatch(login({
           email:response.data.user.email,
           userId:response.data.user.userId,
-          userName:response.data.user.userName
+          userName:response.data.user.userName,
+          profileImg:response.data.user.profileImg
         }))
       })
       .catch((err) => {

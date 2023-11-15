@@ -43,9 +43,22 @@ export default function Register() {
     }, 2000)
   }
 
+  const showPreview = (e) => {
+    console.log(e)
+    console.log(e.target.name, e.target.value)
+    if(e.target.value.trim() !== ''){
+      console.log(document.getElementById('profImage').innerHTML)
+      document.getElementById('profImage').innerHTML = `<img src="${e.target.value}" alt="previewimg"
+      style="max-width:100%; max-height:200px"/>`
+    }
+  }
+
   return (
     <div className='register'>
       <span className='registerTitle'>Register</span>
+      <div className="imagePreview"  id='profImage'>
+
+      </div>
       <form className='registerForm' onSubmit={handleSubmit}>
         <label>Username</label>
         <input
@@ -62,6 +75,15 @@ export default function Register() {
           placeholder='Enter your email...'
           onChange={handleInputChange}
           name='email'
+        />
+        <label>Profile Image Url</label>
+        <input
+          className='registerInput'
+          type='text'
+          placeholder='Enter your image url...'
+          onChange={handleInputChange}
+          onBlur={showPreview}
+          name='profImage'
         />
         <label>Password</label>
         <input

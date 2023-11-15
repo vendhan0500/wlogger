@@ -9,7 +9,6 @@ import setUser from '../../Context/Reducer'
 import { connect } from 'react-redux'
 
 function Homepage({ user }) {
-  console.log(user)
   const [posts, setPosts] = useState([])
   const { search } = useLocation()
 

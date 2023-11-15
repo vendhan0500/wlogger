@@ -12,15 +12,13 @@ namespace API.Models
         public string Title {get; set;}
         public string Description {get; set;}
         public int? CommentId {get; set;}
-        public Comment? Comment {get; set;}
+        public List<Comment?> Comments {get; set;}
         public string Photo {get; set;}
         public int UserId {get; set;}
         [NotMapped]
         public User? User {get; set;}
         public int CategoryId {get; set;}
-        [BsonElement("dateAdded")]
         public DateTime DateAdded {get; set;} = new DateTime();
-        [BsonElement("dateModified")]
         public DateTime DateModified {get; set;} = new DateTime();
     }
 }

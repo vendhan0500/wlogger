@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,29 +8,28 @@ namespace API.Controllers;
 [Route("[controller]")]
 public class UserController : ControllerBase{
 
-    private readonly BlogContext _dbContext;
+    private readonly IUserService _userService;
 
-    public UserController(BlogContext dbContext)
+    public UserController(IUserService userService)
     {
-        _dbContext = dbContext;
+        _userService = userService;
     }
 
     [HttpGet]
     public ActionResult<List<User>> GetAll(){
-        return _dbContext.Users.ToList();
+        return _userService.GetAllUser();
     }
 
     [HttpGet("{id}")]
     public ActionResult<User> GetUser(int id){
-        return _dbContext.Users.FirstOrDefault(x => x.UserId == id);
+        return _userService.GetUser(id);
     }
 
     [HttpPost]
     public ActionResult<User> Save([FromBody] User user){
         try{
 
-            _dbContext.Users.Add(user);
-            int rowsAffected = _dbContext.SaveChanges(); // SaveChanges returns the number of rows affected
+            int rowsAffected = _userService.Save(user); // SaveChanges returns the number of rows affected
 
             if (rowsAffected > 0)
             {
@@ -58,22 +56,13 @@ public class UserController : ControllerBase{
 
     [HttpPut("{id}")]
     public ActionResult UpdateUser(int id, [FromBody] User user){
-        var existingUser = _dbContext.Users.FirstOrDefault(x => x.UserId == id);
-        if(existingUser == null){
-            return NotFound($"Student with Id = {id} not found");
-        }
-        existingUser = user;
-        _dbContext.SaveChanges();
-        return NoContent();
+        var result = _userService.UpdateUser(id, user);
+        return Ok($"{result} rows affected" );
     }
 
     [HttpDelete("{id}")]
     public ActionResult Delete(int id){
-        var existingUser = _dbContext.Users.FirstOrDefault(x => x.UserId == id);
-        if(existingUser == null) {
-            return NotFound($"Student with Id = {id} not found");
-        }
-        _dbContext.Users.Remove(existingUser);
-        return Ok($"Student with Id= {id} deleted" );
+        _userService.RemoveUser(id);
+        return Ok($"User with Id= {id} deleted" );
     }
 }

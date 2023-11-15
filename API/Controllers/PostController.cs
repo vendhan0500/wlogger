@@ -1,5 +1,4 @@
 using API.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,56 +8,49 @@ namespace API.Controllers;
 [Route("[controller]")]
 public class PostController : ControllerBase{
 
-    private readonly BlogContext _dbContext;
-    public PostController(BlogContext dbContext)
+    private readonly IPostService _postService;
+    public PostController(IPostService postService)
     {
-        _dbContext = dbContext;
+        _postService = postService;
     }
 
     [HttpGet]
     public ActionResult<List<Post>> GetAll(){
-        var posts = _dbContext.Posts.OrderByDescending(x => x.DateAdded).ToList();
-        return posts.Count > 0 ? posts : null;
+        return _postService.GetAllPosts();
     }
 
     [HttpGet("{id}")]
     public ActionResult<Post?> GetPost(int id){
-        var post = _dbContext.Posts.FirstOrDefault(x => x.PostId == id);
-        if(post != null){
-            var user = _dbContext.Users.FirstOrDefault(x => x.UserId == post.UserId);
-            if(user != null)
-                post.User = user;
-        }
-        return post;
+        return _postService.GetPost(id);
     }
 
     [HttpPost]
     public ActionResult<User> Save([FromBody] Post post){
-        _dbContext.Posts.Add(post);
-        _dbContext.SaveChanges();
+       _postService.Save(post);
         return CreatedAtAction(nameof(GetPost), new {id=post.PostId}, post);
     }
 
     [HttpPut]
     public ActionResult Update([FromBody] Post post){
-        var existingPost = _dbContext.Posts.FirstOrDefault(x => x.PostId == post.PostId);
-        if(existingPost == null){
-            return NotFound($"Post with Id = {post.PostId} not found");
-        }else{
-            _dbContext.Entry(post).State = EntityState.Modified;
-            _dbContext.SaveChanges();
-        }
-        return Ok($"Update Success {existingPost}");
+        _postService.UpdatePost(post);
+        return Ok($"Update Success");
     }
 
     [HttpDelete("{id}")]
     public ActionResult Delete(int id){
-        var post =  _dbContext.Posts.FirstOrDefault(x => x.PostId == id);
-        if(post == null) {
-            return NotFound($"User with Id = {id} not found");
-        }
-        _dbContext.Posts.Remove(post);
-        _dbContext.SaveChanges();
-        return Ok($"User with Id= {id} deleted" );
+        _postService.RemovePost(id);
+        return Ok($"Post with Id= {id} deleted" );
     }
+
+    [HttpPost("SaveComment")]
+    public ActionResult SaveComment([FromBody] Comment comment){
+        _postService.SaveComment(comment);
+        return Ok("Action successful");
+    }
+
+    // [HttpGet("GetComment")]
+    // public ActionResult<List<Comment>> GetPostComment(int postId){
+    //     var comments = _dbContext.Comment.OrderByDescending(x => x.CreatedAt).ToList();
+    //     return comments.Count() != 0  ? comments : null;
+    // }
 }

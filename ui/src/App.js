@@ -11,7 +11,6 @@ import { selectUser } from './components/feature/userSlice'
 
 function App() {
   const userData = useSelector(selectUser);
-  console.log(userData)
   const currentUser = userData.user != null ? userData : false;
   return (
     <Router>
