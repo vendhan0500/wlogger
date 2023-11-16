@@ -1,13 +1,12 @@
 using API.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
 public class PostController : ControllerBase{
-
+    
     private readonly IPostService _postService;
     public PostController(IPostService postService)
     {
